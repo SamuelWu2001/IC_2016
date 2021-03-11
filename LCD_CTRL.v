@@ -11,6 +11,7 @@ output [7:0] IRAM_D;
 output [5:0] IRAM_A;
 output busy;
 output done;
+
 reg [3:0]current;
 //reg [3:0]next;
 //reg [3:0]cmd;
@@ -21,6 +22,8 @@ reg [7:0]mma;
 reg [5:0]temp;
 integer i;
 
+reg [5:0]index;
+reg bbb;
 reg IROM_rd;
 reg [5:0] IROM_A;
 reg IRAM_valid;
@@ -38,24 +41,36 @@ always @(negedge clk) begin
         IROM_rd <= 1;
         done <= 0;
         IRAM_valid <=0;
+        index <= 0;
+        bbb <= 0;
     end
     else if(busy==1)begin
         case(current)
-            4'hc:begin
-                map[IROM_A] <= IROM_Q;
-            if(IROM_A[2:0]==3'd7)begin
-                IROM_A[5:3] <= IROM_A[5:3]+3'd1;
-                IROM_A[2:0] <= 3'd0;
-            end
-            else begin
-                IROM_A <= IROM_A+6'd1;
-            end
-            if(IROM_A==6'd63)begin
-                IROM_A <= 6'd36; 
-                busy <= 0;
-                //IRAM_A <= 6'd0;
-                IROM_rd <= 0;
-            end
+            4'hc:begin //correct
+                map[index] = IROM_Q;
+                
+                IROM_A <= IROM_A+1;
+                if (index==0) begin
+                    if(bbb==1)begin
+                        index = index + 1;
+                        bbb<=0;
+                    end
+                    else begin
+                        bbb <= 1; 
+                    end
+                end
+                else begin
+                    index <= index + 1; 
+                end
+                
+                //ccc = ccc+1;
+                if(index==6'd63)begin
+                    IROM_A <= 6'd36; 
+                    busy <= 0;
+                    //IRAM_A <= 6'd0;
+                    IROM_rd <= 0;
+                    index<=0;
+                end
             end
             4'hd:begin
                 count <= count+1;
@@ -107,16 +122,11 @@ always @(negedge clk) begin
                     IRAM_A <= IRAM_A+6'd1;
                 end
             end
-            4'd0:begin
+            4'd0:begin //correct
                 //IRAM_valid <=1;
-                IRAM_D <= map[IRAM_A];
-                //if(IRAM_A[2:0]==3'd7)begin
-                //    IRAM_A[5:3] <= IRAM_A[5:3]+3'd1;
-                //    IRAM_A[2:0] <= 3'd0;
-                //end
-                //else begin
-                IRAM_A <= IRAM_A+1;
-                //end
+                IRAM_D <= map[index];
+                IRAM_A <= index;
+                index <= index + 1;
                 if(IRAM_A==6'd63)begin
                     busy <= 0;
                     IRAM_A <= 6'd27;
@@ -238,20 +248,16 @@ always @(negedge clk) begin
         endcase
     end
     else begin
+        if(busy==0&&cmd_valid==1)begin
+            current <= cmd;
+            busy <= 1;
+            done <= 0;
+            IRAM_valid <= 1;
+            IRAM_A <= 0;
+        end
         
     end
 end
-
-always @(posedge cmd) begin
-    if(busy==0&&cmd_valid==1)begin
-        current <= cmd;
-        busy <= 1;
-        done <= 0;
-        IRAM_valid <= 1;
-        IRAM_A <= 0;
-    end
-end
-
 endmodule
 
 
