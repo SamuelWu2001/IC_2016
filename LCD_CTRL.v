@@ -15,7 +15,7 @@ reg [3:0]current;
 //reg [3:0]next;
 //reg [3:0]cmd;
 reg [1:0]count;
-reg [5:0]map[7:0];
+reg [7:0]map[63:0];
 reg [1:0]rm[7:0];
 reg [7:0]mma;
 reg [5:0]temp;
@@ -29,7 +29,7 @@ reg [5:0] IRAM_A;
 reg busy;
 reg done;
 reg [1:0]r_count;
-always @(negedge clk or posedge reset) begin
+always @(negedge clk) begin
     if(reset)begin
         IROM_A = 6'd0;
         busy <= 1;
@@ -110,13 +110,13 @@ always @(negedge clk or posedge reset) begin
             4'd0:begin
                 //IRAM_valid <=1;
                 IRAM_D <= map[IRAM_A];
-                if(IRAM_A[2:0]==3'd7)begin
-                    IRAM_A[5:3] <= IRAM_A[5:3]+3'd1;
-                    IRAM_A[2:0] <= 3'd0;
-                end
-                else begin
-                    IRAM_A <= IRAM_A+6'd1;
-                end
+                //if(IRAM_A[2:0]==3'd7)begin
+                //    IRAM_A[5:3] <= IRAM_A[5:3]+3'd1;
+                //    IRAM_A[2:0] <= 3'd0;
+                //end
+                //else begin
+                IRAM_A <= IRAM_A+1;
+                //end
                 if(IRAM_A==6'd63)begin
                     busy <= 0;
                     IRAM_A <= 6'd27;
@@ -248,9 +248,7 @@ always @(posedge cmd) begin
         busy <= 1;
         done <= 0;
         IRAM_valid <= 1;
-        if(cmd==0)begin
-            IRAM_A <= 0;
-        end
+        IRAM_A <= 0;
     end
 end
 
