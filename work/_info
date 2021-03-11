@@ -15,7 +15,7 @@ Z2 8C:/Users/samue/VScode/IC contest/E_ICC2018_priliminary_univ_cell/IC_2016/tes
 Z3 FC:/Users/samue/VScode/IC contest/E_ICC2018_priliminary_univ_cell/IC_2016/testfixture.v
 L0 190
 Z4 OL;L;10.1c;51
-Z5 !s108 1615472485.978000
+Z5 !s108 1615477649.115000
 Z6 !s107 C:/Users/samue/VScode/IC contest/E_ICC2018_priliminary_univ_cell/IC_2016/testfixture.v|
 Z7 !s90 -reportprogress|300|-work|work|-vopt|+define+tb2|C:/Users/samue/VScode/IC contest/E_ICC2018_priliminary_univ_cell/IC_2016/testfixture.v|
 Z8 o-work work -L mtiAvm -L mtiOvm -L mtiUvm -L mtiUPF
@@ -47,9 +47,9 @@ vLCD_CTRL
 VUW>2j;KeUD7[[Q4G_mWLK3
 r1
 31
-I1`febZ]ll57]]G`mWg0TP1
+I<XYPH9kDBm]?ieQR2iPgk1
 R10
-w1615472406
+w1615477645
 8C:/Users/samue/VScode/IC contest/E_ICC2018_priliminary_univ_cell/IC_2016/LCD_CTRL.v
 FC:/Users/samue/VScode/IC contest/E_ICC2018_priliminary_univ_cell/IC_2016/LCD_CTRL.v
 L0 1
@@ -57,9 +57,9 @@ R4
 R8
 n@l@c@d_@c@t@r@l
 !s85 0
-!s100 HGMGk3g9jYCa1d22@G0BF2
 !s90 -reportprogress|300|-work|work|-vopt|C:/Users/samue/VScode/IC contest/E_ICC2018_priliminary_univ_cell/IC_2016/LCD_CTRL.v|
-!s108 1615472485.852000
+!s100 mbiB95fo8^9_oERSXQkfL2
+!s108 1615477649.019000
 !s107 C:/Users/samue/VScode/IC contest/E_ICC2018_priliminary_univ_cell/IC_2016/LCD_CTRL.v|
 !i10b 1
 vtest
