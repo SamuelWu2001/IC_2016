@@ -1,0 +1,83 @@
+m255
+K3
+13
+cModel Technology
+dC:\Users\samue\VScode\src
+vIRAM
+V<@Ffj1cn60zcz7;=HAIWo0
+r1
+!s85 0
+31
+IH[0^e?WPM^JSiAf8heZER3
+Z0 dC:\Users\samue\VScode\IC contest\E_ICC2018_priliminary_univ_cell
+Z1 w1615205734
+Z2 8C:/Users/samue/VScode/IC contest/E_ICC2018_priliminary_univ_cell/testfixture.v
+Z3 FC:/Users/samue/VScode/IC contest/E_ICC2018_priliminary_univ_cell/testfixture.v
+L0 190
+Z4 OL;L;10.1c;51
+Z5 !s108 1615463531.332000
+Z6 !s107 C:/Users/samue/VScode/IC contest/E_ICC2018_priliminary_univ_cell/testfixture.v|
+Z7 !s90 -reportprogress|300|-work|work|-vopt|+define+tb1|C:/Users/samue/VScode/IC contest/E_ICC2018_priliminary_univ_cell/testfixture.v|
+Z8 o-work work -L mtiAvm -L mtiOvm -L mtiUvm -L mtiUPF
+Z9 !s92 -work work +define+tb1 -L mtiAvm -L mtiOvm -L mtiUvm -L mtiUPF
+n@i@r@a@m
+!s100 f>EaVlH8<6ka]bJN72lAF2
+!i10b 1
+vIROM
+VTm6D@FeKBTlED]LWI0ZaV0
+r1
+31
+IPRfR54dJhY?S9A;<>cLBW1
+Z10 dC:\Users\samue\VScode\IC contest\E_ICC2018_priliminary_univ_cell
+R1
+R2
+R3
+L0 165
+R4
+R5
+R6
+R7
+R8
+R9
+n@i@r@o@m
+!s85 0
+!s100 bgdT3ZIL6L><dh9?>OJY;2
+!i10b 1
+vLCD_CTRL
+VUW>2j;KeUD7[[Q4G_mWLK3
+r1
+31
+I_hTV0`CfUiYfkXDU5f4zk3
+R10
+w1615463526
+8C:/Users/samue/VScode/IC contest/E_ICC2018_priliminary_univ_cell/LCD_CTRL.v
+FC:/Users/samue/VScode/IC contest/E_ICC2018_priliminary_univ_cell/LCD_CTRL.v
+L0 1
+R4
+R8
+n@l@c@d_@c@t@r@l
+!s85 0
+!s90 -reportprogress|300|-work|work|-vopt|C:/Users/samue/VScode/IC contest/E_ICC2018_priliminary_univ_cell/LCD_CTRL.v|
+!s100 O[4R72:ZWcg4c][?Ea6<B3
+!s108 1615463531.112000
+!s107 C:/Users/samue/VScode/IC contest/E_ICC2018_priliminary_univ_cell/LCD_CTRL.v|
+!i10b 1
+vtest
+ViYi1S7iTl]5NUC4OOjAFG3
+r1
+31
+Ii<;UP_VhRT^ceD^ZOl?5D1
+R10
+R1
+R2
+R3
+L0 26
+R4
+R5
+R6
+R7
+R8
+R9
+!s85 0
+!s100 MJ54HVXhZCaDdbI8fQUOB0
+!i10b 1
