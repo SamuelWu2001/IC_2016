@@ -157,7 +157,6 @@ always @(negedge clk) begin
             end
             4'd3:begin//left
                 count <= count+1;
-                
                 //current <= 4'hd;
                 case (count)
                     3'd0: begin
