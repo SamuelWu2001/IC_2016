@@ -8,27 +8,27 @@ V<@Ffj1cn60zcz7;=HAIWo0
 r1
 !s85 0
 31
-Im?bF?R<NMcYbg4H7CoSzU0
-Z0 dC:\Users\samue\VScode\IC contest\E_ICC2018_priliminary_univ_cell\IC_2016
-Z1 w1615205734
-Z2 8C:/Users/samue/VScode/IC contest/E_ICC2018_priliminary_univ_cell/IC_2016/testfixture.v
-Z3 FC:/Users/samue/VScode/IC contest/E_ICC2018_priliminary_univ_cell/IC_2016/testfixture.v
+Im?fWbUhOX>8;m1`MZfaRG1
+Z0 dD:\2021\IC_2016
+Z1 w1615921617
+Z2 8D:/2021/IC_2016/testfixture.v
+Z3 FD:/2021/IC_2016/testfixture.v
 L0 190
 Z4 OL;L;10.1c;51
-Z5 !s108 1615477649.115000
-Z6 !s107 C:/Users/samue/VScode/IC contest/E_ICC2018_priliminary_univ_cell/IC_2016/testfixture.v|
-Z7 !s90 -reportprogress|300|-work|work|-vopt|+define+tb2|C:/Users/samue/VScode/IC contest/E_ICC2018_priliminary_univ_cell/IC_2016/testfixture.v|
+Z5 !s108 1615924145.698000
+Z6 !s107 D:/2021/IC_2016/testfixture.v|
+Z7 !s90 -reportprogress|300|-work|work|-vopt|+define+tb2|D:/2021/IC_2016/testfixture.v|
 Z8 o-work work -L mtiAvm -L mtiOvm -L mtiUvm -L mtiUPF
 Z9 !s92 -work work +define+tb2 -L mtiAvm -L mtiOvm -L mtiUvm -L mtiUPF
 n@i@r@a@m
-!s100 YUnf0GPzX3=j6z5R=hb9i2
+!s100 iZYZSEc1C=MzmO5PemDek2
 !i10b 1
 vIROM
 VTm6D@FeKBTlED]LWI0ZaV0
 r1
 31
-IYmMQ?147VdK3mMaKbZVJC1
-Z10 dC:\Users\samue\VScode\IC contest\E_ICC2018_priliminary_univ_cell\IC_2016
+I7[CY=:W^?e=6oVkTU4G7`3
+Z10 dD:\2021\IC_2016
 R1
 R2
 R3
@@ -41,32 +41,32 @@ R8
 R9
 n@i@r@o@m
 !s85 0
-!s100 cFTIg>BJGP1z[_HU;<azR2
+!s100 01NAo985;KQC8zND[GUGK0
 !i10b 1
 vLCD_CTRL
 VUW>2j;KeUD7[[Q4G_mWLK3
 r1
 31
-I<XYPH9kDBm]?ieQR2iPgk1
+IAO23KUO?=Gk:GO@^>1Ee@3
 R10
-w1615477645
-8C:/Users/samue/VScode/IC contest/E_ICC2018_priliminary_univ_cell/IC_2016/LCD_CTRL.v
-FC:/Users/samue/VScode/IC contest/E_ICC2018_priliminary_univ_cell/IC_2016/LCD_CTRL.v
+w1615924075
+8D:\2021\IC_2016\LCD_CTRL.v
+FD:\2021\IC_2016\LCD_CTRL.v
 L0 1
 R4
 R8
 n@l@c@d_@c@t@r@l
 !s85 0
-!s90 -reportprogress|300|-work|work|-vopt|C:/Users/samue/VScode/IC contest/E_ICC2018_priliminary_univ_cell/IC_2016/LCD_CTRL.v|
-!s100 mbiB95fo8^9_oERSXQkfL2
-!s108 1615477649.019000
-!s107 C:/Users/samue/VScode/IC contest/E_ICC2018_priliminary_univ_cell/IC_2016/LCD_CTRL.v|
+!s100 6b<:oK2EQaG5^77@cFWKL1
+!s90 -reportprogress|300|-work|work|-vopt|D:\2021\IC_2016\LCD_CTRL.v|
+!s108 1615924145.564000
+!s107 D:\2021\IC_2016\LCD_CTRL.v|
 !i10b 1
 vtest
 ViYi1S7iTl]5NUC4OOjAFG3
 r1
 31
-I<=mG9Y:KCiEX:aIj:o]jo2
+I=@ofPL]Ioojf19dVCm32b1
 R10
 R1
 R2
@@ -79,5 +79,5 @@ R7
 R8
 R9
 !s85 0
-!s100 f4PYO[jfcFM:[<7`13`TH2
+!s100 8G9CiVi@e_1[M0aCGZloP2
 !i10b 1
