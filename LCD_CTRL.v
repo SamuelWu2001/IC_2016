@@ -15,7 +15,7 @@ output done;
 reg [3:0]current;
 reg [2:0]count;
 reg [7:0]map[63:0];
-reg [1:0]rm[7:0];
+reg [7:0]rm[3:0];
 reg [7:0]mma;
 reg [5:0]temp;
 reg [5:0]index;
@@ -28,7 +28,10 @@ reg [5:0] IRAM_A;
 reg busy;
 reg done;
 reg [1:0]r_count;
-
+reg [7:0]NONE_IRAM_D;
+reg [5:0]NONE_IRAM_A;
+reg [5:0]NONE_IROM_A;
+reg [5:0]temp_IROM_A;
 integer i;
 always @(negedge clk) begin
     if(reset)begin
@@ -59,9 +62,9 @@ always @(negedge clk) begin
                 index <= index + 1; 
             end
             if(index == 6'd63)begin
-                IROM_A <= 6'd36;
+                IROM_A <= NONE_IROM_A;
+                temp_IROM_A <= 6'd36;
                 busy <= 0;
-                IROM_rd <= 0;
                 index<=0;
             end
         end
@@ -147,145 +150,151 @@ always @(negedge clk) begin
             end
             */
             4'd0:begin //correct
-                //IRAM_valid <=1;
+                IRAM_valid <=1;
                 IRAM_D <= map[index];
                 IRAM_A <= index;
                 index <= index + 1;
                 if(IRAM_A==6'd63)begin
                     busy <= 0;
-                    //IRAM_A <= 6'd27;
                     IRAM_valid <=0;
                     done <= 1;
                 end
             end
             4'd1:begin //SHift Up
                 count <= count+1;
-                //current <= 4'hd;
                 case (count)
                     3'd0: begin
-                        if(IROM_A[5:3]==3'd1)begin
-                            IROM_A[5:3] <= 3'd1;
+                        if(temp_IROM_A[5:3]==3'd1)begin
+                           temp_IROM_A[5:3] <= 3'd1;
                         end 
                         else begin
-                            IROM_A[5:3] <= IROM_A[5:3] + 3'd1;
-                        end                        
+                           temp_IROM_A[5:3] <=temp_IROM_A[5:3] - 3'd1;
+                        end  
                     end
-                    3'd1: begin IRAM_A <= IROM_A - 9;IRAM_D <= map[IROM_A-9]; end
-                    3'd2: begin IRAM_A <= IROM_A - 8;IRAM_D <= map[IROM_A-8]; end
-                    3'd3: begin IRAM_A <= IROM_A - 1; IRAM_D <= map[IROM_A-1]; end
-                    3'd4: begin 
-                        IRAM_A <= IROM_A; 
-                        IRAM_D <= map[IROM_A];
+                    3'd1: begin IRAM_valid <= 1; IRAM_A <=temp_IROM_A - 9;IRAM_D <= map[temp_IROM_A-9]; end
+                    3'd2: begin IRAM_A <=temp_IROM_A - 8;IRAM_D <= map[temp_IROM_A-8]; end
+                    3'd3: begin IRAM_A <=temp_IROM_A - 1; IRAM_D <= map[temp_IROM_A-1]; end
+                    3'd4: begin IRAM_A <=temp_IROM_A; IRAM_D <= map[temp_IROM_A];end
+                    3'd5: begin
+                        IRAM_A <= NONE_IRAM_A;
+                        IRAM_D <= NONE_IRAM_D;
                         busy <= 0;
                         count <= 0;
                         IRAM_valid <= 0;
-                        done <= 1; 
+                         
                     end
                 endcase
             end
             4'd2:begin //Shift Down
                 count <= count+1;
-                //current <= 4'hd;
                 case (count)
                     3'd0: begin
-                        if(IROM_A[5:3]==3'd7)begin
-                            IROM_A[5:3] <= 3'd7;
+                        if(temp_IROM_A[5:3]==3'd7)begin
+                           temp_IROM_A[5:3] <= 3'd7;
                         end 
                         else begin
-                            IROM_A[5:3] <= IROM_A[5:3] + 3'd1;
-                        end                        
+                           temp_IROM_A[5:3] <=temp_IROM_A[5:3] + 3'd1;
+                        end
                     end
-                    3'd1: begin IRAM_A <= IROM_A - 9;IRAM_D <= map[IROM_A-9]; end
-                    3'd2: begin IRAM_A <= IROM_A - 8;IRAM_D <= map[IROM_A-8]; end
-                    3'd3: begin IRAM_A <= IROM_A - 1; IRAM_D <= map[IROM_A-1]; end
-                    3'd4: begin 
-                        IRAM_A <= IROM_A; 
-                        IRAM_D <= map[IROM_A];
+                    3'd1: begin IRAM_valid <= 1;  IRAM_A <=temp_IROM_A - 9;IRAM_D <= map[temp_IROM_A-9]; end
+                    3'd2: begin IRAM_A <=temp_IROM_A - 8;IRAM_D <= map[temp_IROM_A-8]; end
+                    3'd3: begin IRAM_A <=temp_IROM_A - 1; IRAM_D <= map[temp_IROM_A-1]; end
+                    3'd4: begin IRAM_A <=temp_IROM_A; IRAM_D <= map[temp_IROM_A]; end
+                    3'd5: begin
+                        IRAM_A <= NONE_IRAM_A;
+                        IRAM_D <= NONE_IRAM_D;
                         busy <= 0;
                         count <= 0;
                         IRAM_valid <= 0;
-                        done <= 1; 
+                         
                     end
                 endcase
             end
             4'd3:begin //Shift Left
                 count <= count+1;
-                //current <= 4'hd;
                 case (count)
                     3'd0: begin
-                        if(IROM_A[2:0]==3'd1)begin
-                            IROM_A[2:0] <= 3'd1;
+                        if(temp_IROM_A[2:0]==3'd1)begin
+                           temp_IROM_A[2:0] <= 3'd1;
                         end 
                         else begin
-                            IROM_A[2:0] <= IROM_A[2:0]-3'd1;
-                        end                        
+                           temp_IROM_A[2:0] <=temp_IROM_A[2:0]-3'd1;
+                        end                    
                     end
-                    3'd1: begin IRAM_A <= IROM_A - 9;IRAM_D <= map[IROM_A-9]; end
-                    3'd2: begin IRAM_A <= IROM_A - 8;IRAM_D <= map[IROM_A-8]; end
-                    3'd3: begin IRAM_A <= IROM_A - 1; IRAM_D <= map[IROM_A-1]; end
-                    3'd4: begin 
-                        IRAM_A <= IROM_A; 
-                        IRAM_D <= map[IROM_A];
+                    3'd1: begin IRAM_valid <= 1; IRAM_A <=temp_IROM_A - 9;IRAM_D <= map[temp_IROM_A-9]; end
+                    3'd2: begin IRAM_A <=temp_IROM_A - 8;IRAM_D <= map[temp_IROM_A-8]; end
+                    3'd3: begin IRAM_A <=temp_IROM_A - 1; IRAM_D <= map[temp_IROM_A-1]; end
+                    3'd4: begin IRAM_A <=temp_IROM_A; IRAM_D <= map[temp_IROM_A]; end
+                    3'd5: begin
+                        IRAM_A <= NONE_IRAM_A;
+                        IRAM_D <= NONE_IRAM_D;
                         busy <= 0;
                         count <= 0;
                         IRAM_valid <= 0;
-                        done <= 1; 
+                         
                     end
                 endcase
             end
             4'd4:begin //Shift Right
                 count <= count+1;
-                //current <= 4'hd;
                 case (count)
                     3'd0: begin
-                        if(IROM_A[2:0]==3'd7)begin
-                            IROM_A[2:0] <= 3'd7;
+                        if(temp_IROM_A[2:0]==3'd7)begin
+                           temp_IROM_A[2:0] <= 3'd7;
                         end 
                         else begin
-                            IROM_A[2:0] <= IROM_A[2:0]+3'd1;
-                        end                        
+                           temp_IROM_A[2:0] <=temp_IROM_A[2:0]+3'd1;
+                        end                    
                     end
-                    3'd1: begin IRAM_A <= IROM_A - 9;IRAM_D <= map[IROM_A-9]; end
-                    3'd2: begin IRAM_A <= IROM_A - 8;IRAM_D <= map[IROM_A-8]; end
-                    3'd3: begin IRAM_A <= IROM_A - 1; IRAM_D <= map[IROM_A-1]; end
-                    3'd4: begin 
-                        IRAM_A <= IROM_A; 
-                        IRAM_D <= map[IROM_A];
+                    3'd1: begin IRAM_valid <= 1; IRAM_A <=temp_IROM_A - 9;IRAM_D <= map[temp_IROM_A-9]; end
+                    3'd2: begin IRAM_A <=temp_IROM_A - 8;IRAM_D <= map[temp_IROM_A-8]; end
+                    3'd3: begin IRAM_A <=temp_IROM_A - 1; IRAM_D <= map[temp_IROM_A-1]; end
+                    3'd4: begin IRAM_A <=temp_IROM_A; IRAM_D <= map[temp_IROM_A]; end
+                    3'd5: begin
+                        IRAM_A <= NONE_IRAM_A;
+                        IRAM_D <= NONE_IRAM_D;
                         busy <= 0;
                         count <= 0;
                         IRAM_valid <= 0;
-                        done <= 1; 
+                         
                     end
                 endcase
             end
             4'd5:begin //Max
                 count <= count+1;
-                //current <= 4'hd;
                 case (count)
                     3'd0: begin
                         for (i = 0;i < 4 ; i = i+1 ) begin
-                            if(i==1)begin
-                                temp = temp + 6'd7;
+                            if(i == 0)begin
+                                mma = map [temp_IROM_A - 9];
                             end
-                            else begin
-                                temp = temp + 6'd1;
+                            else if (i == 1)begin
+                                if (mma < map[temp_IROM_A - 8])begin
+                                    mma = map[temp_IROM_A - 8];
+                                end
                             end
-                            if(mma < map[temp])begin
-                                mma = map[temp];
+                            else if (i == 2)begin
+                                if (mma < map[temp_IROM_A - 1])begin
+                                    mma = map[temp_IROM_A - 1];
+                                end
+                            end
+                            else begin 
+                                if (mma < map[temp_IROM_A])begin
+                                    mma = map[temp_IROM_A];
+                                end
                             end
                         end
                     end
-                    3'd1: begin IRAM_A <= IROM_A - 9; map[IROM_A-9] <= mma; IRAM_D <= mma; end
-                    3'd2: begin IRAM_A <= IROM_A - 8; map[IROM_A-8] <= mma; IRAM_D <= mma; end
-                    3'd3: begin IRAM_A <= IROM_A - 1; map[IROM_A-1] <= mma; IRAM_D <= mma; end
-                    3'd4: begin 
-                        IRAM_A <= IROM_A; 
-                        IRAM_D <= mma;
-                        map[IROM_A] <= mma;
+                    3'd1: begin IRAM_valid <= 1; IRAM_A <=temp_IROM_A - 9; map[temp_IROM_A-9] <= mma; IRAM_D <= mma; end
+                    3'd2: begin IRAM_A <=temp_IROM_A - 8; map[temp_IROM_A-8] <= mma; IRAM_D <= mma; end
+                    3'd3: begin IRAM_A <=temp_IROM_A - 1; map[temp_IROM_A-1] <= mma; IRAM_D <= mma; end
+                    3'd4: begin IRAM_A <=temp_IROM_A; IRAM_D <= mma; map[temp_IROM_A] <= mma;end
+                    3'd5: begin
+                        IRAM_A <= NONE_IRAM_A;
+                        IRAM_D <= NONE_IRAM_D;
                         busy <= 0;
                         count <= 0;
                         IRAM_valid <= 0;
-                        done <= 1; 
                     end
                 endcase
             end
@@ -293,80 +302,105 @@ always @(negedge clk) begin
                 count <= count+1;
                 case (count)
                     3'd0: begin
-                        for (i = 0;i < 4 ; i = i+1 ) begin
-                            if(i==1)begin
-                                temp = temp + 6'd7;
+                        for (i = 0;i < 4 ; i = i + 1) begin
+                            if(i == 0)begin
+                                mma = map [temp_IROM_A - 9];
                             end
-                            else begin
-                                temp = temp + 6'd1;
+                            else if (i == 1)begin
+                                if (mma > map[temp_IROM_A - 8])begin
+                                    mma = map[temp_IROM_A - 8];
+                                end
                             end
-                            if(mma > map[temp])begin
-                                mma = map[temp];
+                            else if (i == 2)begin
+                                if (mma > map[temp_IROM_A - 1])begin
+                                    mma = map[temp_IROM_A - 1];
+                                end
+                            end
+                            else begin 
+                                if (mma > map[temp_IROM_A])begin
+                                    mma = map[temp_IROM_A];
+                                end
                             end
                         end
                     end
-                    3'd1: begin IRAM_A <= IROM_A - 9; map[IROM_A-9] <= mma; IRAM_D <= mma; end
-                    3'd2: begin IRAM_A <= IROM_A - 8; map[IROM_A-8] <= mma; IRAM_D <= mma; end
-                    3'd3: begin IRAM_A <= IROM_A - 1; map[IROM_A-1] <= mma; IRAM_D <= mma; end
-                    3'd4: begin 
-                        IRAM_A <= IROM_A; 
-                        IRAM_D <= mma;
-                        map[IROM_A] <= mma;
+                    3'd1: begin IRAM_valid <= 1; IRAM_A <=temp_IROM_A - 9; map[temp_IROM_A-9] <= mma; IRAM_D <= mma; end
+                    3'd2: begin IRAM_A <=temp_IROM_A - 8; map[temp_IROM_A-8] <= mma; IRAM_D <= mma; end
+                    3'd3: begin IRAM_A <=temp_IROM_A - 1; map[temp_IROM_A-1] <= mma; IRAM_D <= mma; end
+                    3'd4: begin IRAM_A <=temp_IROM_A; IRAM_D <= mma; map[temp_IROM_A] <= mma;end
+                    3'd5: begin
+                        IRAM_A <= NONE_IRAM_A;
+                        IRAM_D <= NONE_IRAM_D;
                         busy <= 0;
                         count <= 0;
                         IRAM_valid <= 0;
-                        done <= 1; 
+                         
                     end
                 endcase
             end
-            4'd7:begin //Shift Average
-                mma <= ({2'b0,map[IRAM_A]}+{2'b0,map[IRAM_A+1]}+{2'b0,map[IRAM_A+8]}+{2'b0,map[IRAM_A+9]})>>2;
-                //IRAM_A <= IROM_A-6'd9;
-                current <= 4'he;
-            end
-            4'd8:begin //Shift Counterclockwise Rotation
+            4'd7:begin //Average
                 count <= count + 1;
                 case (count)
                     3'd0: begin
-                        rm[0] <= map[IRAM_A+1];
-                        rm[1] <= map[IRAM_A+9];
-                        rm[2] <= map[IRAM_A+0];
-                        rm[3] <= map[IRAM_A+8];
+                        mma <= ({2'b0,map[temp_IROM_A - 9]}+{2'b0,map[temp_IROM_A -8]}+{2'b0,map[temp_IROM_A -1]}+{2'b0,map[temp_IROM_A]})>>2;
+                    end
+                    3'd1: begin IRAM_valid <= 1; IRAM_A <=temp_IROM_A - 9; map[temp_IROM_A-9] <= mma; IRAM_D <= mma; end
+                    3'd2: begin IRAM_A <=temp_IROM_A - 8; map[temp_IROM_A-8] <= mma; IRAM_D <= mma; end
+                    3'd3: begin IRAM_A <=temp_IROM_A - 1; map[temp_IROM_A-1] <= mma; IRAM_D <= mma; end
+                    3'd4: begin IRAM_A <=temp_IROM_A; IRAM_D <= mma; map[temp_IROM_A] <= mma;end
+                    3'd5: begin
+                        IRAM_A <= NONE_IRAM_A;
+                        IRAM_D <= NONE_IRAM_D;
+                        busy <= 0;
+                        count <= 0;
+                        IRAM_valid <= 0;
+                         
+                    end
+                    endcase
+                //IRAM_A <=temp_IROM_A-6'd9;
+            end
+            4'd8:begin //Counterclockwise Rotation
+                count <= count + 1;
+                case (count)
+                    3'd0: begin
+                        rm[0] <= map[temp_IROM_A-8];
+                        rm[1] <= map[temp_IROM_A];
+                        rm[2] <= map[temp_IROM_A-9];
+                        rm[3] <= map[temp_IROM_A-1];
                         end
-                    3'd1: begin IRAM_A <= IROM_A - 9; map[IROM_A-9] <= rm[0]; IRAM_D <= rm[0]; end
-                    3'd2: begin IRAM_A <= IROM_A - 8; map[IROM_A-8] <= rm[1]; IRAM_D <= rm[1]; end
-                    3'd3: begin IRAM_A <= IROM_A - 1; map[IROM_A-1] <= rm[2]; IRAM_D <= rm[2]; end
-                    3'd4: begin 
-                        IRAM_A <= IROM_A; 
-                        map[IROM_A] <= rm[3];
-                        IRAM_D <= rm[3];
+                    3'd1: begin IRAM_valid <= 1;IRAM_A <=temp_IROM_A - 9; map[temp_IROM_A-9] <= rm[0]; IRAM_D <= rm[0]; end
+                    3'd2: begin IRAM_A <=temp_IROM_A - 8; map[temp_IROM_A-8] <= rm[1]; IRAM_D <= rm[1]; end
+                    3'd3: begin IRAM_A <=temp_IROM_A - 1; map[temp_IROM_A-1] <= rm[2]; IRAM_D <= rm[2]; end
+                    3'd4: begin IRAM_A <=temp_IROM_A; map[temp_IROM_A] <= rm[3]; IRAM_D <= rm[3];end
+                    3'd5: begin
+                        IRAM_A <= NONE_IRAM_A;
+                        IRAM_D <= NONE_IRAM_D;
                         busy <= 0;
                         count <= 0;
                         IRAM_valid <= 0;
-                        done <= 1; 
+                         
                     end
                 endcase
             end
-            4'd8:begin //Shift Clockwise Rotation
+            4'd9:begin //Shift Clockwise Rotation
                 count <= count + 1;
                 case (count)
                     3'd0: begin
-                        rm[0] <= map[IRAM_A+8];
-                        rm[1] <= map[IRAM_A+0];
-                        rm[2] <= map[IRAM_A+9];
-                        rm[3] <= map[IRAM_A+1];
+                        rm[0] <= map[temp_IROM_A-1];
+                        rm[1] <= map[temp_IROM_A-9];
+                        rm[2] <= map[temp_IROM_A];
+                        rm[3] <= map[temp_IROM_A-8];
                     end
-                    3'd1: begin IRAM_A <= IROM_A - 9; map[IROM_A-9] <= rm[0]; IRAM_D <= rm[0]; end
-                    3'd2: begin IRAM_A <= IROM_A - 8; map[IROM_A-8] <= rm[1]; IRAM_D <= rm[1]; end
-                    3'd3: begin IRAM_A <= IROM_A - 1; map[IROM_A-1] <= rm[2]; IRAM_D <= rm[2]; end
-                    3'd4: begin 
-                        IRAM_A <= IROM_A; 
-                        map[IROM_A] <= rm[3];
-                        IRAM_D <= rm[3];
+                    3'd1: begin IRAM_valid <= 1; IRAM_A <=temp_IROM_A - 9; map[temp_IROM_A-9] <= rm[0]; IRAM_D <= rm[0]; end
+                    3'd2: begin IRAM_A <=temp_IROM_A - 8; map[temp_IROM_A-8] <= rm[1]; IRAM_D <= rm[1]; end
+                    3'd3: begin IRAM_A <=temp_IROM_A - 1; map[temp_IROM_A-1] <= rm[2]; IRAM_D <= rm[2]; end
+                    3'd4: begin IRAM_A <=temp_IROM_A; map[temp_IROM_A] <= rm[3]; IRAM_D <= rm[3];end
+                    3'd5: begin
+                        IRAM_A <= NONE_IRAM_A;
+                        IRAM_D <= NONE_IRAM_D;
                         busy <= 0;
                         count <= 0;
                         IRAM_valid <= 0;
-                        done <= 1; 
+                         
                     end
                 endcase
             end
@@ -374,22 +408,22 @@ always @(negedge clk) begin
                 count <= count + 1;
                 case (count)
                     3'd0: begin
-                        rm[0] <= map[IRAM_A+8];
-                        rm[1] <= map[IRAM_A+9];
-                        rm[2] <= map[IRAM_A+0];
-                        rm[3] <= map[IRAM_A+1];
+                        rm[0] <= map[temp_IROM_A-1];
+                        rm[1] <= map[temp_IROM_A];
+                        rm[2] <= map[temp_IROM_A-9];
+                        rm[3] <= map[temp_IROM_A-8];
                     end
-                    3'd1: begin IRAM_A <= IROM_A - 9; map[IROM_A-9] <= rm[0]; IRAM_D <= rm[0]; end
-                    3'd2: begin IRAM_A <= IROM_A - 8; map[IROM_A-8] <= rm[1]; IRAM_D <= rm[1]; end
-                    3'd3: begin IRAM_A <= IROM_A - 1; map[IROM_A-1] <= rm[2]; IRAM_D <= rm[2]; end
-                    3'd4: begin 
-                        IRAM_A <= IROM_A; 
-                        map[IROM_A] <= rm[3];
-                        IRAM_D <= rm[3];
+                    3'd1: begin IRAM_valid <= 1; IRAM_A <=temp_IROM_A - 9; map[temp_IROM_A-9] <= rm[0]; IRAM_D <= rm[0]; end
+                    3'd2: begin IRAM_A <=temp_IROM_A - 8; map[temp_IROM_A-8] <= rm[1]; IRAM_D <= rm[1]; end
+                    3'd3: begin IRAM_A <=temp_IROM_A - 1; map[temp_IROM_A-1] <= rm[2]; IRAM_D <= rm[2]; end
+                    3'd4: begin IRAM_A <=temp_IROM_A; map[temp_IROM_A] <= rm[3]; IRAM_D <= rm[3];end
+                    3'd5: begin
+                        IRAM_A <= NONE_IRAM_A;
+                        IRAM_D <= NONE_IRAM_D;
                         busy <= 0;
                         count <= 0;
                         IRAM_valid <= 0;
-                        done <= 1; 
+                         
                     end
                 endcase
             end
@@ -397,22 +431,22 @@ always @(negedge clk) begin
                 count <= count + 1;
                 case (count)
                     3'd0: begin
-                        rm[0] <= map[IRAM_A+1];
-                        rm[1] <= map[IRAM_A+0];
-                        rm[2] <= map[IRAM_A+9];
-                        rm[3] <= map[IRAM_A+8];
-                end
-                    3'd1: begin IRAM_A <= IROM_A - 9; map[IROM_A-9] <= rm[0]; IRAM_D <= rm[0]; end
-                    3'd2: begin IRAM_A <= IROM_A - 8; map[IROM_A-8] <= rm[1]; IRAM_D <= rm[1]; end
-                    3'd3: begin IRAM_A <= IROM_A - 1; map[IROM_A-1] <= rm[2]; IRAM_D <= rm[2]; end
-                    3'd4: begin 
-                        IRAM_A <= IROM_A; 
-                        map[IROM_A] <= rm[3];
-                        IRAM_D <= rm[3];
+                        rm[0] <= map[temp_IROM_A-8];
+                        rm[1] <= map[temp_IROM_A-9];
+                        rm[2] <= map[temp_IROM_A];
+                        rm[3] <= map[temp_IROM_A-1];
+                    end
+                    3'd1: begin IRAM_valid <= 1; IRAM_A <=temp_IROM_A - 9; map[temp_IROM_A-9] <= rm[0]; IRAM_D <= rm[0]; end
+                    3'd2: begin IRAM_A <=temp_IROM_A - 8; map[temp_IROM_A-8] <= rm[1]; IRAM_D <= rm[1]; end
+                    3'd3: begin IRAM_A <=temp_IROM_A - 1; map[temp_IROM_A-1] <= rm[2]; IRAM_D <= rm[2]; end
+                    3'd4: begin IRAM_A <=temp_IROM_A; map[temp_IROM_A] <= rm[3]; IRAM_D <= rm[3];end
+                    3'd5: begin
+                        IRAM_A <= NONE_IRAM_A;
+                        IRAM_D <= NONE_IRAM_D;
                         busy <= 0;
                         count <= 0;
                         IRAM_valid <= 0;
-                        done <= 1; 
+                         
                     end
                 endcase
             end
@@ -420,10 +454,10 @@ always @(negedge clk) begin
     end
     else begin
         if(busy == 0)begin
+            IROM_rd <= 0;
             current <= cmd;
             busy <= 1;
             done <= 0;
-            IRAM_valid <= 1;
         end
     end
 end
